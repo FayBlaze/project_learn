@@ -4,17 +4,14 @@ from urllib.parse import urlparse
 import random
 import string
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///urls.db'
+app = Flask(__name__) # buat app web
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///urls.db' # simpan dbnya
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+db = SQLAlchemy(app) # coonect db ke app
 
-
-# ==========================
 # Database Model
-# ==========================
-class Urls(db.Model):
+class Urls(db.Model): #bikin database dari python
     id = db.Column(db.Integer, primary_key=True)
     long = db.Column(db.String(2048), nullable=False)
     short = db.Column(db.String(6), unique=True, nullable=False)
@@ -23,10 +20,7 @@ class Urls(db.Model):
         self.long = long
         self.short = short
 
-
-# ==========================
 # Helper Functions
-# ==========================
 def is_valid_url(url):
     parsed = urlparse(url)
     return bool(parsed.scheme and parsed.netloc)
@@ -40,10 +34,7 @@ def shorten_url(length=6):
         if not Urls.query.filter_by(short=short_code).first():
             return short_code
 
-
-# ==========================
 # Routes
-# ==========================
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == "POST":
@@ -86,10 +77,7 @@ def display_short_url(url):
 def display_all():
     return render_template('all_urls.html', vals=Urls.query.all())
 
-
-# ==========================
 # Initialize Database
-# ==========================
 with app.app_context():
     db.create_all()
 
