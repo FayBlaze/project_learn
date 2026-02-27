@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Short URL{% endblock %}
+
+{% block content %}
+
+<div class="card shadow p-4 text-center">
+    <h4 class="mb-3">Your Short URL:</h4>
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" 
+               value="{{ request.host_url }}{{ short_url_display }}" 
+               id="shortUrl" readonly>
+
+        <button class="btn btn-primary" onclick="copyUrl()">Copy</button>
+    </div>
+
+    <a href="{{ url_for('home') }}" class="btn btn-secondary mt-3">
+        Back to Home
+    </a>
+</div>
+
+<script>
+function copyUrl() {
+    var copyText = document.getElementById("shortUrl");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("Copied!");
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}All URLs{% endblock %}
+
+{% block content %}
+
+<div class="card shadow p-4">
+    <h4 class="mb-4">All Stored URLs</h4>
+
+    {% if vals %}
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Short</th>
+                    <th>Long</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for url in vals %}
+                <tr>
+                    <td>{{ url.id }}</td>
+                    <td>
+                        <a href="{{ url_for('redirection', short_url=url.short) }}" target="_blank">
+                            {{ url.short }}
+                        </a>
+                    </td>
+                    <td style="word-break: break-all;">
+                        {{ url.long }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p>No URLs stored yet.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
